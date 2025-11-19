@@ -1,0 +1,18 @@
+FROM openjdk:17-jdk-slim
+
+WORKDIR /app
+
+COPY todo/pom.xml .
+COPY todo/.mvn .mvn
+COPY todo/mvnw .
+
+RUN chmod +x mvnw
+RUN ./mvnw dependency:go-offline
+
+COPY todo/src src
+
+RUN ./mvnw clean package -DskipTests
+
+EXPOSE 8080
+
+CMD ["java", "-jar", "target/todo-0.0.1-SNAPSHOT.jar"]
