@@ -2,6 +2,8 @@
 
 A full-stack web application for personal productivity management with task management, calendar integration, and automated reminders.
 
+**Deployed on Render.com**
+
 ## Architecture
 
 - **Frontend**: React.js with Tailwind CSS
