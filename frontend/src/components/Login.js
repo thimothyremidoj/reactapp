@@ -1,14 +1,11 @@
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useAuth } from '../context/AuthContext';
 import PublicNavbar from './PublicNavbar';
 
 const Login = () => {
-  const [formData, setFormData] = useState({
-    username: '',
-    password: ''
-  });
+  const [formData, setFormData] = useState({ username: '', password: '' });
   const [loading, setLoading] = useState(false);
   const [loginType, setLoginType] = useState('user');
   const { login } = useAuth();
@@ -16,10 +13,7 @@ const Login = () => {
 
   const handleChange = useCallback((e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    setFormData(prev => ({ ...prev, [name]: value }));
   }, []);
 
   const handleSubmit = async (e) => {
@@ -28,100 +22,91 @@ const Login = () => {
     
     try {
       await login(formData);
-      toast.success('Login successful!');
+      toast.success('Welcome back!');
       navigate('/dashboard');
     } catch (error) {
-      toast.error(error.response?.data?.message || 'Login failed');
+      toast.error(error.response?.data?.message || 'Invalid credentials');
     } finally {
       setLoading(false);
     }
   };
 
-  const loginConfig = useMemo(() => ({
-    user: {
-      gradient: 'from-purple-600 to-pink-600',
-      iconBg: 'from-purple-500 to-pink-500',
-      title: 'Welcome Back',
-      subtitle: 'Sign in to your Advanced ToDo account',
-      buttonText: 'Sign In as User'
-    },
-    admin: {
-      gradient: 'from-red-600 to-orange-600',
-      iconBg: 'from-red-500 to-orange-500',
-      title: 'Admin Access',
-      subtitle: 'Administrative login portal',
-      buttonText: 'Sign In as Admin'
-    }
-  }), []);
-
-  const config = loginConfig[loginType];
-
   return (
-    <div className="min-h-screen bg-gray-50">
-      
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
       <PublicNavbar />
-      <div className="relative flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-md w-full">
-          <div className="bg-white border border-gray-300 rounded-2xl p-8 shadow-lg">
-            {/* Login Type Toggle */}
-            <div className="flex mb-8 p-1 bg-gray-100 rounded-xl">
-              <button
-                onClick={() => setLoginType('user')}
-                className={`flex-1 py-2 px-4 rounded-lg text-sm font-medium transition-all duration-300 ${
-                  loginType === 'user'
-                    ? 'bg-gray-800 text-white shadow-lg'
-                    : 'text-gray-600 hover:text-gray-800'
-                }`}
-              >
-                User Login
-              </button>
-              <button
-                onClick={() => setLoginType('admin')}
-                className={`flex-1 py-2 px-4 rounded-lg text-sm font-medium transition-all duration-300 ${
-                  loginType === 'admin'
-                    ? 'bg-gray-700 text-white shadow-lg'
-                    : 'text-gray-600 hover:text-gray-800'
-                }`}
-              >
-                Admin Login
-              </button>
-            </div>
+      
+      <div className="flex items-center justify-center py-16 px-4">
+        <div className="w-full max-w-md">
+          {/* Main Card */}
+          <div className="bg-white/80 backdrop-blur-sm border border-white/20 rounded-3xl p-8 shadow-2xl shadow-blue-500/10">
             
+            {/* Header */}
             <div className="text-center mb-8">
-              <div className="mx-auto w-16 h-16 bg-gray-600 rounded-full flex items-center justify-center mb-4">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl mb-6 shadow-lg">
                 <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <h2 className="text-3xl font-bold text-gray-800 mb-2">
-                {config.title}
-              </h2>
-              <p className="text-gray-600">{config.subtitle}</p>
+              <h1 className="text-3xl font-bold text-slate-800 mb-2">Welcome Back</h1>
+              <p className="text-slate-600">Sign in to continue to your workspace</p>
             </div>
-            <form className="space-y-6" onSubmit={handleSubmit}>
-              <div className="space-y-4">
+
+            {/* Login Type Selector */}
+            <div className="flex bg-slate-100 rounded-2xl p-1 mb-8">
+              <button
+                type="button"
+                onClick={() => setLoginType('user')}
+                className={`flex-1 py-3 px-4 rounded-xl text-sm font-semibold transition-all duration-200 ${
+                  loginType === 'user'
+                    ? 'bg-white text-slate-800 shadow-sm'
+                    : 'text-slate-600 hover:text-slate-800'
+                }`}
+              >
+                User
+              </button>
+              <button
+                type="button"
+                onClick={() => setLoginType('admin')}
+                className={`flex-1 py-3 px-4 rounded-xl text-sm font-semibold transition-all duration-200 ${
+                  loginType === 'admin'
+                    ? 'bg-white text-slate-800 shadow-sm'
+                    : 'text-slate-600 hover:text-slate-800'
+                }`}
+              >
+                Admin
+              </button>
+            </div>
+
+            {/* Form */}
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="space-y-5">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Username</label>
+                  <label className="block text-sm font-semibold text-slate-700 mb-2">
+                    Username
+                  </label>
                   <input
                     name="username"
                     type="text"
                     required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-transparent"
-                    placeholder={loginType === 'admin' ? 'Admin username' : 'Enter your username'}
                     value={formData.username}
                     onChange={handleChange}
+                    className="w-full px-4 py-3.5 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-slate-800 placeholder-slate-400"
+                    placeholder={loginType === 'admin' ? 'admin' : 'Enter username'}
                   />
                 </div>
+                
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                  <label className="block text-sm font-semibold text-slate-700 mb-2">
+                    Password
+                  </label>
                   <input
                     name="password"
                     type="password"
                     required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-transparent"
-                    placeholder={loginType === 'admin' ? 'Admin password' : 'Enter your password'}
                     value={formData.password}
                     onChange={handleChange}
+                    className="w-full px-4 py-3.5 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-slate-800 placeholder-slate-400"
+                    placeholder="Enter password"
                   />
                 </div>
               </div>
@@ -129,37 +114,41 @@ const Login = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-3 px-4 bg-gray-800 text-white font-semibold rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 disabled:opacity-50 transition-all duration-300 shadow-lg"
+                className="w-full py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? (
-                  <div className="flex items-center justify-center">
-                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                    Signing in...
+                  <div className="flex items-center justify-center space-x-2">
+                    <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                    <span>Signing in...</span>
                   </div>
                 ) : (
-                  config.buttonText
+                  `Sign In${loginType === 'admin' ? ' as Admin' : ''}`
                 )}
               </button>
-
-              {loginType === 'user' && (
-                <div className="text-center pt-4">
-                  <p className="text-gray-600">
-                    Don't have an account?{' '}
-                    <Link to="/register" className="font-semibold text-gray-800 hover:text-gray-600 transition-colors underline">
-                      Sign up here
-                    </Link>
-                  </p>
-                </div>
-              )}
-              
-              {loginType === 'admin' && (
-                <div className="text-center pt-4">
-                  <p className="text-sm text-gray-500">
-                    Admin access only • Contact system administrator for credentials
-                  </p>
-                </div>
-              )}
             </form>
+
+            {/* Footer */}
+            {loginType === 'user' && (
+              <div className="text-center mt-8 pt-6 border-t border-slate-200">
+                <p className="text-slate-600">
+                  New here?{' '}
+                  <Link 
+                    to="/register" 
+                    className="font-semibold text-blue-600 hover:text-blue-700 transition-colors"
+                  >
+                    Create account
+                  </Link>
+                </p>
+              </div>
+            )}
+            
+            {loginType === 'admin' && (
+              <div className="text-center mt-8 pt-6 border-t border-slate-200">
+                <p className="text-sm text-slate-500">
+                  🔒 Administrative access required
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </div>

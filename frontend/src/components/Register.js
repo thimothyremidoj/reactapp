@@ -17,21 +17,11 @@ const Register = () => {
 
   const handleChange = useCallback((e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    setFormData(prev => ({ ...prev, [name]: value }));
   }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    console.log('Form submitted with data:', {
-      username: formData.username,
-      email: formData.email,
-      password: formData.password ? '[HIDDEN]' : 'EMPTY',
-      confirmPassword: formData.confirmPassword ? '[HIDDEN]' : 'EMPTY'
-    });
     
     if (formData.password !== formData.confirmPassword) {
       toast.error('Passwords do not match');
@@ -56,18 +46,14 @@ const Register = () => {
     setLoading(true);
     
     try {
-      console.log('Attempting registration...');
-      const response = await register({
+      await register({
         username: formData.username,
         email: formData.email,
         password: formData.password
       });
-      console.log('Registration response:', response);
-      toast.success('Registration successful! Please login.');
+      toast.success('Account created successfully! Please sign in.');
       navigate('/login');
     } catch (error) {
-      console.error('Registration error:', error);
-      console.error('Error response:', error.response);
       const errorMessage = error.response?.data || error.message || 'Registration failed';
       toast.error(errorMessage);
     } finally {
@@ -76,72 +62,86 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
       <PublicNavbar />
-      <div className="relative flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-md w-full">
-          <div className="bg-white border border-gray-300 rounded-2xl p-8 shadow-lg">
+      
+      <div className="flex items-center justify-center py-16 px-4">
+        <div className="w-full max-w-md">
+          {/* Main Card */}
+          <div className="bg-white/80 backdrop-blur-sm border border-white/20 rounded-3xl p-8 shadow-2xl shadow-blue-500/10">
+            
+            {/* Header */}
             <div className="text-center mb-8">
-              <div className="mx-auto w-16 h-16 bg-gray-600 rounded-full flex items-center justify-center mb-4">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-emerald-600 to-teal-600 rounded-2xl mb-6 shadow-lg">
                 <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
                 </svg>
               </div>
-              <h2 className="text-3xl font-bold text-gray-800 mb-2">
-                Join Advanced ToDo
-              </h2>
-              <p className="text-gray-600">Create your account and boost productivity</p>
+              <h1 className="text-3xl font-bold text-slate-800 mb-2">Join TaskFlow</h1>
+              <p className="text-slate-600">Create your account and start organizing</p>
             </div>
-            <form className="space-y-6" onSubmit={handleSubmit}>
-              <div className="space-y-4">
+
+            {/* Form */}
+            <form onSubmit={handleSubmit} className="space-y-5">
+              <div className="grid grid-cols-1 gap-5">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Username</label>
+                  <label className="block text-sm font-semibold text-slate-700 mb-2">
+                    Username
+                  </label>
                   <input
                     name="username"
                     type="text"
                     required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-transparent"
-                    placeholder="Choose a username"
                     value={formData.username}
                     onChange={handleChange}
+                    className="w-full px-4 py-3.5 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all duration-200 text-slate-800 placeholder-slate-400"
+                    placeholder="Choose a unique username"
                   />
                 </div>
+                
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                  <label className="block text-sm font-semibold text-slate-700 mb-2">
+                    Email Address
+                  </label>
                   <input
                     name="email"
                     type="email"
                     required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-transparent"
-                    placeholder="Enter your email"
                     value={formData.email}
                     onChange={handleChange}
+                    className="w-full px-4 py-3.5 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all duration-200 text-slate-800 placeholder-slate-400"
+                    placeholder="your@email.com"
                   />
                 </div>
+                
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                  <label className="block text-sm font-semibold text-slate-700 mb-2">
+                    Password
+                  </label>
                   <input
                     name="password"
                     type="password"
                     required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-transparent"
-                    placeholder="Create a password"
                     value={formData.password}
                     onChange={handleChange}
+                    className="w-full px-4 py-3.5 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all duration-200 text-slate-800 placeholder-slate-400"
+                    placeholder="Create a strong password"
                   />
-                  <p className="text-xs text-gray-500 mt-1">Password must be at least 6 characters long</p>
+                  <p className="text-xs text-slate-500 mt-2">Minimum 6 characters required</p>
                 </div>
+                
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Confirm Password</label>
+                  <label className="block text-sm font-semibold text-slate-700 mb-2">
+                    Confirm Password
+                  </label>
                   <input
                     name="confirmPassword"
                     type="password"
                     required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-transparent"
-                    placeholder="Confirm your password"
                     value={formData.confirmPassword}
                     onChange={handleChange}
+                    className="w-full px-4 py-3.5 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all duration-200 text-slate-800 placeholder-slate-400"
+                    placeholder="Confirm your password"
                   />
                 </div>
               </div>
@@ -149,27 +149,31 @@ const Register = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-3 px-4 bg-gray-800 text-white font-semibold rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 disabled:opacity-50 transition-all duration-300 shadow-lg"
+                className="w-full py-4 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed mt-8"
               >
                 {loading ? (
-                  <div className="flex items-center justify-center">
-                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                    Creating account...
+                  <div className="flex items-center justify-center space-x-2">
+                    <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                    <span>Creating account...</span>
                   </div>
                 ) : (
                   'Create Account'
                 )}
               </button>
-
-              <div className="text-center pt-4">
-                <p className="text-gray-600">
-                  Already have an account?{' '}
-                  <Link to="/login" className="font-semibold text-gray-800 hover:text-gray-600 transition-colors underline">
-                    Sign in here
-                  </Link>
-                </p>
-              </div>
             </form>
+
+            {/* Footer */}
+            <div className="text-center mt-8 pt-6 border-t border-slate-200">
+              <p className="text-slate-600">
+                Already have an account?{' '}
+                <Link 
+                  to="/login" 
+                  className="font-semibold text-emerald-600 hover:text-emerald-700 transition-colors"
+                >
+                  Sign in
+                </Link>
+              </p>
+            </div>
           </div>
         </div>
       </div>
