@@ -17,6 +17,7 @@ public class CorsConfig {
         
         // Allow specific origins in production
         configuration.setAllowedOriginPatterns(Arrays.asList(
+            "https://advanced-todo-app-frontend.onrender.com",
             "http://localhost:3000",
             "http://localhost:3001", 
             "http://localhost:3002",
