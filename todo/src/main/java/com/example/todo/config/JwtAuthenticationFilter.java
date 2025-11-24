@@ -35,7 +35,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 try {
                     username = jwtUtil.getUsernameFromToken(token);
                 } catch (Exception e) {
-                    logger.error("JWT token parsing failed: " + e.getMessage());
+                    // Ignore JWT parsing errors for public endpoints
                 }
             }
 
@@ -48,11 +48,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                         SecurityContextHolder.getContext().setAuthentication(authToken);
                     }
                 } catch (Exception e) {
-                    logger.error("JWT validation failed: " + e.getMessage());
+                    // Ignore JWT validation errors
                 }
             }
         } catch (Exception e) {
-            logger.error("JWT filter error: " + e.getMessage());
+            // Ignore all JWT filter errors to allow public access
         }
 
         filterChain.doFilter(request, response);
