@@ -14,7 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(origins = {"https://advanced-todo-app-frontend.onrender.com", "http://localhost:3000"}, maxAge = 3600, allowCredentials = true)
+@CrossOrigin(origins = {"https://advanced-todo-app-frontend.onrender.com", "http://localhost:3000"}, maxAge = 3600)
 @RestController
 @RequestMapping("/auth")
 @Tag(name = "Authentication", description = "User authentication and registration APIs")
